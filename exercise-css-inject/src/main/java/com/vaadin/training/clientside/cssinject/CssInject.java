@@ -16,10 +16,10 @@ public class CssInject extends AbstractExtension {
     }
 
     public void addStyle(String property, String value) {
-        // TODO: store style to shared state
+        getState().css.put(property, value);
     }
 
     public void removeStyle(String property) {
-        // TODO: remove style from shared state
+        getState().css.remove(property);
     }
 }

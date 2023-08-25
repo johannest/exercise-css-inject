@@ -8,6 +8,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.training.clientside.cssinject.CssInject;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -41,7 +42,7 @@ public class DemoUI extends UI {
         layout.addComponent(label);
 
         Button button = new Button("Background: red");
-        button.addClickListener(new Button.ClickListener() {
+        button.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
                 inject.addStyle("background-color", "red");
@@ -79,14 +80,16 @@ public class DemoUI extends UI {
         final TextField propertyValue = new TextField("Value");
         hl.addComponent(propertyValue);
 
-        hl.addComponent(new Button("Set", new ClickListener() {
+        Button setButton = new Button("Set", new ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
                 inject.addStyle(property.getValue(), propertyValue.getValue());
             }
-        }));
+        });
+        hl.addComponent(setButton);
 
+        hl.setComponentAlignment(setButton, Alignment.BOTTOM_RIGHT);
         layout.addComponent(hl);
     }
 

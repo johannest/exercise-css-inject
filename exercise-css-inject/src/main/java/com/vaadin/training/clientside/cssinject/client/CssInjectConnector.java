@@ -1,5 +1,8 @@
 package com.vaadin.training.clientside.cssinject.client;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.user.client.Element;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ServerConnector;
@@ -15,6 +18,8 @@ public class CssInjectConnector extends AbstractExtensionConnector {
 
     private Element element;
 
+    private Set<String> properties = new HashSet<String>();
+
     @Override
     public CssInjectState getState() {
         return (CssInjectState) super.getState();
@@ -23,7 +28,24 @@ public class CssInjectConnector extends AbstractExtensionConnector {
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
-        // TODO: Update styles based on the shared state
+
+        Set<String> newProperties = getState().css.keySet();
+
+        // Remove from DOM any removed properties
+        for (String property : properties) {
+            if (!newProperties.contains(property)) {
+                element.getStyle().setProperty(property, null);
+            }
+        }
+
+        // Update and add properties
+        for (String property : getState().css.keySet()) {
+            element.getStyle().setProperty(property,
+                    getState().css.get(property));
+        }
+
+        properties = newProperties;
+
     }
 
     @Override
